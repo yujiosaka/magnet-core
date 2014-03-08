@@ -69,8 +69,8 @@ var key_phrase_summary = new mongoose.Schema({
   book_info  : {}, // 本の情報なんでも入れれる
   is_skill   : { type: Boolean, default: false },
   start_at   : { type: Date },
-  end_at     : { type: Date }
-  year_month : { type: String }, // YYYYMM
+  end_at     : { type: Date },
+  year_month : { type: String } // YYYYMM
 });
 
 exports.UserSkill = db.model('user_skill', user_skill);
