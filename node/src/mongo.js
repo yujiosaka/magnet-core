@@ -18,6 +18,15 @@ var uri = [
 
 var db = mongoose.createConnection(uri);
 
+var user = new mongoose.Schema({
+  name: {
+    first: { type: String }, // not used
+    last: { type: String } // not used
+  },
+  email: { type: String, required: true, unique: true }, // ...
+  genres: { type: Array, required: true }, // array of '開発', 'デザイン', 'ライティング', '事務'
+});
+
 var user_skill = new mongoose.Schema({
   id   　　　: { type: Number }, // 連番
   user_id   : { type: Number }, // ユーザーID
@@ -69,10 +78,11 @@ var key_phrase_summary = new mongoose.Schema({
   book_info  : {}, // 本の情報なんでも入れれる
   is_skill   : { type: Boolean, default: false },
   start_at   : { type: Date },
-  end_at     : { type: Date }
+  end_at     : { type: Date },
   year_month : { type: String }, // YYYYMM
 });
 
+exports.User = db.model('user', user);
 exports.UserSkill = db.model('user_skill', user_skill);
 exports.Job = db.model('job', job);
 exports.SkillSummary = db.model('skill_summary', skill_summary);
