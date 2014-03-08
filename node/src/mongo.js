@@ -31,7 +31,7 @@ var user_skill = new mongoose.Schema({
 var job = new mongoose.Schema({
   id   　　    　: { type: Number, required: true }, // 連番
   category      : { type: String, required: true, enum: ['開発', 'デザイン', 'ライティング', '事務'] }, // カテゴリ
-  type          : { type: String, required: true, enum: ['固定報酬制', '時給制', 'コンペ'] }, // タイプ
+  type          : { type: String, required: true, enum: ['固定報酬制', '時給制', 'コンペ', 'タスク'] }, // タイプ
   price         : { type: Number, required: true }, // 固定報酬、時給、コンペまたはタスク
   view_count    : { type: Number, required: true }, // 閲覧数
   proposal_count: { type: Number, required: true }, // 提案数
