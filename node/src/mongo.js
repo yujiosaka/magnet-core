@@ -43,5 +43,15 @@ var job = new mongoose.Schema({
   updated_at    : { type: Date, default: Date.now }
 });
 
+var skill_summary = new mongoose.Schema({
+  skill      : { type: String, required: true }, // スキル名
+  count      : { type: Number, default: 0 }, // 出現回数
+  total_level: { type: Number, default: 0 }, // レベル合計
+  total_years: { type: Number, default: 0 }, // 年数合計
+  start_at   : { type: Date, required: true },
+  end_at     : { type: Date, required: true }
+});
+
 exports.UserSkill = db.model('user_skill', user_skill);
 exports.Job = db.model('job', job);
+exports.SkillSummary = db.model('skill_summary', skill_summary);
