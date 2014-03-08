@@ -67,6 +67,7 @@ var key_phrase_summary = new mongoose.Schema({
   total_score: { type: Number }, // キーフレーズの重要度合計
   total_count: { type: Number }, // 出現回数
   book_info  : {}, // 本の情報なんでも入れれる
+  is_skill   : { type: Boolean, default: false },
   start_at   : { type: Date },
   end_at     : { type: Date }
 });
