@@ -34,6 +34,9 @@ async.times 14, (n, done) ->
       delete summary._id
     async.each summaries, (summary, done) ->
       key_phrase_summary = mongo.KeyPhraseSummary summary
+      key_phrase_summary.start_at = from
+      key_phrase_summary.end_at = to
+      key_phrase_summary.year_month = moment(from).format("YYYYMM")
       key_phrase_summary.save (err) ->
         if err
           console.log err

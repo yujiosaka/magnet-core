@@ -70,6 +70,7 @@ var key_phrase_summary = new mongoose.Schema({
   is_skill   : { type: Boolean, default: false },
   start_at   : { type: Date },
   end_at     : { type: Date }
+  year_month : { type: String }, // YYYYMM
 });
 
 exports.UserSkill = db.model('user_skill', user_skill);
