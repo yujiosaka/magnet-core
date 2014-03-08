@@ -40,7 +40,11 @@ csv().from.stream(fs.createReadStream(file).pipe(iconv), {
       price = record["タスク"];
       break;
     default:
-      throw "Unknown type!";
+      price = 0;
+      break;
+  }
+  if (price === "NULL") {
+    price = 0;
   }
   var user_id;
   if (record["ユーザーID（１人目に契約した人）"] != "NULL") {
