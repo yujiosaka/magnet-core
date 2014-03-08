@@ -11,19 +11,33 @@ object TrendSearcher {
 
   val errorToken = "An error has been detected"
 
-  def search(words: Array[String]): List[(String, Array[String])] = {
+  def search(words: Array[String]): String = {
     GoogleConfigurator.getConfiguration
       .setProperty("google.auth.reIsLoggedIn", ".*")
     val client = new DefaultHttpClient()
     val authenticate = new GoogleAuthenticator(user, password, client)
     val trendClient = new GoogleTrendsClient(authenticate, client)
     val param = words.map(_.trim).mkString(",")
-    println(param)
     val trendRequest = new GoogleTrendsRequest(param)
-    val result = trendClient.execute(trendRequest)
-    if (result.contains(errorToken))
-      throw new IllegalStateException("Failed to search trend data")
-    val parser = new GoogleTrendsCsvParser(result)
+    execute(trendClient)(trendRequest)(0)
+  }
+
+  private def execute(client: GoogleTrendsClient)(request: GoogleTrendsRequest)(count: Int): String = {
+    val result = client.execute(request)
+    if (result.contains(errorToken)) {
+      if (count < 10) {
+        Thread.sleep(1000)
+        execute(client)(request)(count + 1)
+      } else {
+        throw new IllegalStateException("Failed to search trend data")
+      }
+    } else {
+      result
+    }
+  }
+
+  def parseTime(rawData: String): List[(String, Array[String])] = {
+    val parser = new GoogleTrendsCsvParser(rawData)
     parser.getSectionAsString("Interest over time", true)
       .lines.map(parseLine).toList
   }
