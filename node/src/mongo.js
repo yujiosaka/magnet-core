@@ -53,14 +53,25 @@ var skill_summary = new mongoose.Schema({
 });
 
 var key_phrase = new mongoose.Schema({
-  id           : { type: Number, required: true }, // 仕事情報ID
-  category     : { type: String, required: true, enum: ['開発', 'デザイン', 'ライティング', '事務'] }, // カテゴリ
-  key_phrase   : { type: String, required: true }, // キーフレーズ
-  score        : { type: Number, required: true }, // キーフレーズの重要度
-  published_at : { type: Date, required: true }, // 公開日
+  id          : { type: Number, required: true }, // 仕事情報ID
+  category    : { type: String, required: true, enum: ['開発', 'デザイン', 'ライティング', '事務'] }, // カテゴリ
+  key_phrase  : { type: String, required: true }, // キーフレーズ
+  score       : { type: Number, required: true }, // キーフレーズの重要度
+  published_at: { type: Date, required: true }, // 公開日
+});
+
+var key_phrase_summary = new mongoose.Schema({
+  category   : { type: String, required: true, enum: ['開発', 'デザイン', 'ライティング', '事務'] }, // カテゴリ
+  key_phrase : { type: String, required: true }, // キーフレーズ
+  total_score: { type: Number, required: true }, // キーフレーズの重要度合計
+  total_count: { type: Number, required: true }, // 出現回数
+  book_info  : {} // 本の情報なんでも入れれる
+  start_at   : { type: Date, required: true },
+  end_at     : { type: Date, required: true }
 });
 
 exports.UserSkill = db.model('user_skill', user_skill);
 exports.Job = db.model('job', job);
 exports.SkillSummary = db.model('skill_summary', skill_summary);
 exports.KeyPhrase = db.model('key_phrase', key_phrase);
+exports.KeyPhraseSummary = db.model('key_phrase_summary', key_phrase_summary);
