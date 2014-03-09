@@ -3,6 +3,7 @@ package magnet.core
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import scala.io.Source
+import java.net.URLEncoder
 
 object ChartCreator {
 
@@ -18,14 +19,11 @@ object ChartCreator {
 
   val colors = "ff0000,0000ff,00ff00,ffff00,00ffff"
 
-  def getChart(words: Array[String])(data: List[(String, Array[String])]):
+  def getChart(labels: Array[String])(data: Array[(String, Array[String])]):
   Array[Byte] = {
-    val partData = partialData(data)
-    val rawData = (0 until words.size).map(
-      index => partData.map(_._2(index)))
-    val chartData = "t:" + rawData.map(_.mkString(",")).mkString("|")
-    val labelValue = "0:|" + partData.head._1 + "|" + partData.last._1 + "|1:|0|100"
-    val notes = words.mkString("|")
+    val chartData = "t:" + data.map(_._2.mkString(",")).mkString("|")
+    val labelValue = "0:|" + labels.head + "|" + labels.last + "|1:|0|100"
+    val notes = URLEncoder.encode(data.map(_._1).mkString("|"), "utf-8")
     val url = urlPattern.format(
       chartSize, chartData, chartType, notes, colors, labelType, labelValue)
     val source = Source.fromURL(url)(scala.io.Codec.ISO8859)
