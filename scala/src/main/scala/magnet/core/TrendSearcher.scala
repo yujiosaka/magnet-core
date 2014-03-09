@@ -5,12 +5,20 @@ import org.apache.http.impl.client.DefaultHttpClient
 import scala.collection.mutable.ArrayBuffer
 import java.util.Date
 import java.text.SimpleDateFormat
+import scala.io.Source
 
 object TrendSearcher {
 
-  val user = "testmail.magnet@gmail.com"
+  val props = Source.fromFile("gmail.properties").getLines
+    .filterNot(_.trim.isEmpty)
+    .map(line => {
+      val params = line.split("=")
+      params(0).trim -> params(1).trim
+    }).toMap
 
-  val password = "rS5AxI6zYGpP"
+  val user = props("gmail.user")
+
+  val password = props("gmail.password")
 
   val errorToken = "An error has been detected"
 
