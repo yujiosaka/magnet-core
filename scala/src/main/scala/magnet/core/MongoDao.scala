@@ -3,18 +3,19 @@ package magnet.core
 import com.mongodb.casbah.Imports._
 import com.mongodb.ServerAddress
 import java.util.Date
+import scala.io.Source
 
-class MongoDao {
+class MongoDao(config: Map[String, String]) {
 
-  val url = "tempest.mongohq.com"
+  val url = config("host")
 
   val port = 10045
 
-  val database = "magnet-large"
+  val database = config("database")
 
-  val user = "user"
+  val user = config("user")
 
-  val password = "testtest"
+  val password = config("password")
 
   val dateFormat = "%1$tY%1$tm"
 
@@ -58,5 +59,12 @@ class MongoDao {
 }
 
 object MongoDao {
-  def apply(): MongoDao = new MongoDao
+  def apply(): MongoDao = {
+    val configFile = Source.fromFile("../node/config/development.js")
+    val config = configFile.getLines.filter(_.matches(".+:.+,")).map(str => {
+      val params = str.split(":")
+      params(0).trim -> params(1).replaceAll("""[",]""", "").trim
+    }).toMap
+    new MongoDao(config)
+  }
 }
