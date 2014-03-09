@@ -11,7 +11,7 @@ object ChartCreator {
 
   val datePattern = "yyyy-MM-dd"
 
-  val chartSize = "500x500"
+  val chartSize = "500x320"
 
   val chartType = "lc"
 

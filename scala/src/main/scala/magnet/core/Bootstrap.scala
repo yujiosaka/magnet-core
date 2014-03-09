@@ -17,9 +17,10 @@ object Bootstrap {
 
   def main(args: Array[String]) {
     val cal = Calendar.getInstance()
-    if (! args.isEmpty)
+    if (! args.isEmpty) {
       cal.setTime(new SimpleDateFormat(dateFormat).parse(args(0)))
-//    cal.set(Calendar.MONTH, 1)
+      cal.add(Calendar.MONTH, 1)
+    }
     cal.set(Calendar.DAY_OF_MONTH, 1)
     cal.add(Calendar.DAY_OF_MONTH, -1)
     val executeDate = cal.getTime
@@ -38,7 +39,7 @@ object Bootstrap {
         val chart = ChartCreator.getChart(labels)(data)
         logger.info("Upload chartData of [%1$s %2$tY%2$tm] to Amazon S3"
           .format(category._1, executeDate))
-        val url = S3Uploader.upload(chart, category._2)
+        val url = S3Uploader.upload(chart, category._2)(executeDate)
         logger.info("Insert chartData of [%1$s %2$tY%2$tm] to MongoDB"
           .format(category._1, executeDate))
         dao.insertResult(category._1, words, url, trend.rawData)(executeDate)

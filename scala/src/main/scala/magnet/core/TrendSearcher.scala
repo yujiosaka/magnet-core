@@ -20,17 +20,21 @@ object TrendSearcher {
     GoogleConfigurator.getConfiguration
       .setProperty("google.auth.reIsLoggedIn", ".*")
     val client = new DefaultHttpClient()
-    val authenticate = new GoogleAuthenticator(user, password, client)
-    val trendClient = new GoogleTrendsClient(authenticate, client)
-    val param = words.map(_.trim).mkString(",")
-    val trendRequest = new GoogleTrendsRequest(param.replaceAll("・", ""))
-    execute(trendClient)(trendRequest)(0)
+    try {
+      val authenticate = new GoogleAuthenticator(user, password, client)
+      val trendClient = new GoogleTrendsClient(authenticate, client)
+      val param = words.map(_.trim).mkString(",")
+      val trendRequest = new GoogleTrendsRequest(param.replaceAll("・", ""))
+      execute(trendClient)(trendRequest)(0)
+    } finally {
+      client.close()
+    }
   }
 
   private def execute(client: GoogleTrendsClient)(request: GoogleTrendsRequest)(count: Int): String = {
     val result = client.execute(request)
     if (result.contains(errorToken)) {
-      if (count < 10) {
+      if (count < 1) {
         Thread.sleep(5000)
         println("Failed to search trend data, retry")
         execute(client)(request)(count + 1)

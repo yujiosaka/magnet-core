@@ -18,8 +18,8 @@ object S3Uploader {
 
   val bucket = "magnet-box"
 
-  def upload(image: Array[Byte], category: String):String = {
-    val fileName = filePattern.format(new Date, category)
+  def upload(image: Array[Byte], category: String)(date: Date):String = {
+    val fileName = filePattern.format(date, category)
     val client = new AmazonS3Client(
       new BasicAWSCredentials(accessKey, secretKey))
     client.setEndpoint(endPoint)
